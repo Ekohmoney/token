@@ -54,22 +54,22 @@ program token.aleo {
     }
 
     // The function `transfer_private` sends the specified token amount to the token receiver from the specified token record.
-    transition transfer_private(sender: token, receiver: address, amount: u64) -> (token, token) {
+    transition transfer_private(sender: token, receiver: address) -> (token, token) {
         // Checks the given token record has sufficient balance.
         // This `sub` operation is safe, and the proof will fail if an overflow occurs.
         // `difference` holds the change amount to be returned to sender.
-        let difference: u64 = sender.amount - amount;
+        let balance: u64 = 0u64;
 
         // Produce a token record with the change amount for the sender.
         let remaining: token = token {
             owner: sender.owner,
-            amount: difference,
+            amount: balance,
         };
 
         // Produce a token record for the specified receiver.
         let transferred: token = token {
             owner: receiver,
-            amount: amount,
+            amount: sender.amount,
         };
 
         // Output the sender's change record and the receiver's record.
